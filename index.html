@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Metamask</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="https://unpkg.com/moralis@0.0.6/dist/moralis.js"></script>
+  </head>
+
+  <body>
+    <button onclick="login()">Login with Metamask</button>
+
+    <script>
+        Moralis.initialize("");
+        Moralis.serverURL = "";
+
+        async function login() {
+            console.log("login clicked");
+            var user = await Moralis.Web3.authenticate();
+            if(user) {
+            console.log(user);
+            }
+        }
+        async function listenToUpdates() {
+
+            let query = new Moralis.Query("EthTransactions");
+            let subscription = await query.subscribe();
+
+            subscription.on("create", (object)=> {
+                console.log("new transaction!!");
+                console.log(object);
+
+            });
+        }
+        listenToUpdates()
+    </script>
+  </body>
+</html>
